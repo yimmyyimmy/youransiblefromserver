@@ -1,0 +1,8 @@
+---
+- hosts: webservers
+  become: true
+  roles:
+    - role: '/etc/ansible/installtomcat'
+    - role: '/etc/ansible/warbackup'
+...     
+

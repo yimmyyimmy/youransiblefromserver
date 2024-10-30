@@ -1,0 +1,27 @@
+---
+# tasks file for warbackup
+- name: stop tomcat
+  shell: nohup /opt/apache-tomcat-10.1.31/bin/shutdown.sh
+- name: register path
+  stat:
+   path: /opt/apache-tomcat-10.1.31/webapps/SimpleWebApplication.war
+  register: war_path
+- name: to take backup of old war
+  copy:
+   src: /opt/apache-tomcat-10.1.31/webapps/SimpleWebApplication.war
+   dest: /home/ec2-user/backup
+  when: war_path.stat.exists == true
+    #- name: copy new war file from nexus
+    # command: wget  
+    # dest: /opt/apache-tomcat-10.1.31/webapps/
+- name: Download WAR from Nexus
+  get_url:
+    url: "http://65.2.30.53:8081/repository/maven-releases/com/maven/SimpleWebApplication/9.1.14/SimpleWebApplication-9.1.14.war"
+    dest: /opt/apache-tomcat-10.1.31/webapps/
+    mode: 0755
+    owner: root
+    group: root
+    username: "admin"
+    password: "passw0rd"     
+- name: start tomcat
+  shell: nohup /opt/apache-tomcat-10.1.31/bin/startup.sh

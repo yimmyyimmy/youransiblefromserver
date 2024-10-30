@@ -1,0 +1,29 @@
+# tasks file for installtomcat
+- name: install java
+  yum:
+    name: java
+    state: present  
+- name: Install Apache Tomcat
+  get_url:
+   url: https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.31/bin/apache-tomcat-10.1.31.tar.gz
+   dest: /opt/
+   mode: 0777
+- name: make directory
+  file:
+    path: /home/ec2-user/bantu
+    state: directory  
+- name: Extract the tar file
+  command: tar -zvxf /opt/apache-tomcat-10.1.31.tar.gz -C /opt/
+- name: copying customized context.xml for login
+  copy:
+   src: /etc/ansible/context.xml
+   dest:  /opt/apache-tomcat-10.1.31/webapps/manager/META-INF/context.xml
+- name: copying customized tomcat-users.xml for login
+  copy:
+   src: /etc/ansible/tomcat-users.xml
+   dest:  /opt/apache-tomcat-10.1.31/conf/
+    #- name: start tomcat
+    #shell: /opt/apache-tomcat-10.1.31/bin/startup.sh
+    #shell: ./startup.sh  
+
+

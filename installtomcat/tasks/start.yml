@@ -1,0 +1,8 @@
+
+- name: Start Tomcat service
+  systemd:
+    name: tomcat
+    state: started
+    enable: true
+  
+

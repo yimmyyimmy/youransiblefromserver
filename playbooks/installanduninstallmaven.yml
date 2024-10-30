@@ -1,0 +1,14 @@
+---
+- name: Install a specific version of Maven
+  hosts: yimmyyimmy
+  become: true
+  tasks:
+    - name: Install Maven specific version
+      yum:
+        name: maven
+        state: latest
+    - name: Uninstall Maven
+      yum:
+        name: maven
+        state: absent      
+...          
